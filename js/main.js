@@ -7,26 +7,35 @@
   const isMobile = () => window.innerWidth < 768;
 
   /* ─── NAV ────────────────────────────────────────────────────────────────── */
-  const header = document.getElementById('site-header');
-  const toggle = document.getElementById('nav-toggle');
-  const menu   = document.getElementById('nav-menu');
+  const header  = document.getElementById('site-header');
+  const toggle  = document.getElementById('nav-toggle');
+  const menu    = document.getElementById('nav-menu');
+  const overlay = document.getElementById('nav-overlay');
 
   if (header) {
     const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 50);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    toggle.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
   if (toggle && menu) {
     toggle.addEventListener('click', () => {
       const open = menu.classList.toggle('open');
       toggle.classList.toggle('open', open);
+      overlay.classList.toggle('open', open);
       toggle.setAttribute('aria-expanded', String(open));
       document.body.style.overflow = open ? 'hidden' : '';
     });
-    menu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
-      menu.classList.remove('open'); toggle.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
-    }));
+    menu.querySelectorAll('a').forEach(l => l.addEventListener('click', closeMenu));
+    overlay.addEventListener('click', closeMenu);
   }
 
   /* ─── MAGNETIC BUTTONS ───────────────────────────────────────────────────── */
