@@ -282,6 +282,8 @@ p { line-height: 1.7; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* X siempre blanca — el menú abierto tiene fondo #282E2F */
+.nav-toggle.open span { background: #fff; }
 
 /* Overlay for closing mobile menu — outside header stacking context */
 .nav-overlay {
