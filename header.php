@@ -27,8 +27,6 @@
         <span></span>
       </button>
 
-      <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
-
       <ul class="nav-menu" id="nav-menu" role="list">
         <li><a class="nav-link" href="#servicios"><?php esc_html_e( 'Servicios', 'mycrof' ); ?></a></li>
         <li><a class="nav-link" href="#proceso"><?php esc_html_e( 'Proceso', 'mycrof' ); ?></a></li>
@@ -40,3 +38,6 @@
     </nav>
   </div>
 </header>
+
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+
