@@ -13,7 +13,8 @@
   const overlay = document.getElementById('nav-overlay');
 
   if (header) {
-    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 50);
+    const heroHeight = document.querySelector('.hero')?.offsetHeight ?? 600;
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > heroHeight - 72);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
