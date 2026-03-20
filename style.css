@@ -182,13 +182,31 @@ p { line-height: 1.7; }
   left: 0;
   right: 0;
   z-index: 100;
-  transition: background var(--t-base), box-shadow var(--t-base), backdrop-filter var(--t-base);
+  transition: box-shadow var(--t-base);
 }
 
-.site-header.scrolled {
+/* Glass effect via ::before so the header itself does NOT become a
+   containing block for position:fixed children (backdrop-filter would
+   trap nav-menu inside the 72px header bounds). */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background var(--t-base), backdrop-filter var(--t-base);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.site-header.scrolled::before {
   background: rgba(255,255,255,0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+}
+
+.site-header.scrolled {
   box-shadow: var(--shadow-float);
 }
 
@@ -282,9 +300,39 @@ p { line-height: 1.7; }
 .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* X siempre blanca — gana sobre .site-header.scrolled .nav-toggle span */
+.nav-toggle.open span,
+.site-header.scrolled .nav-toggle.open span { background: #fff; }
+
+/* Overlay for closing mobile menu — outside header stacking context */
+.nav-overlay {
+  display: none;
+}
 
 @media (max-width: 768px) {
-  .nav-toggle { display: flex; }
+  /* Toggle stays visible above the open menu */
+  .nav-toggle {
+    display: flex;
+    position: relative;
+    z-index: 102;
+  }
+
+  /* Overlay lives outside the header, so z-index is vs document root */
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--t-base);
+  }
+
+  .nav-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .nav-menu {
     position: fixed;
@@ -293,11 +341,11 @@ p { line-height: 1.7; }
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    background: rgba(40, 46, 47, 0.97);
-    backdrop-filter: blur(20px);
+    /* Fully opaque — no backdrop-filter to avoid double-blur with header */
+    background: #282E2F;
     transform: translateX(100%);
     transition: transform var(--t-base);
-    z-index: 99;
+    z-index: 101;
   }
 
   .nav-menu.open { transform: translateX(0); }
@@ -306,6 +354,10 @@ p { line-height: 1.7; }
     font-size: 1.5rem;
     color: #fff;
   }
+
+  /* Override scrolled-state dark color — menu background is always dark */
+  .site-header.scrolled .nav-menu .nav-link { color: #fff; }
+  .site-header.scrolled .nav-menu .nav-link:hover { color: rgba(255,255,255,0.7); }
 
   .nav-cta { margin-left: 0; }
 }
@@ -940,6 +992,15 @@ p { line-height: 1.7; }
 [data-reveal-delay="300"] { transition-delay: 0.3s; }
 [data-reveal-delay="400"] { transition-delay: 0.4s; }
 [data-reveal-delay="500"] { transition-delay: 0.5s; }
+
+/* Mobile: force reveal — small viewports can miss the observer threshold */
+@media (max-width: 768px) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
