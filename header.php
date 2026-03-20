@@ -38,3 +38,6 @@
     </nav>
   </div>
 </header>
+
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+
