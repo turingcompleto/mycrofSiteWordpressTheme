@@ -182,13 +182,31 @@ p { line-height: 1.7; }
   left: 0;
   right: 0;
   z-index: 100;
-  transition: background var(--t-base), box-shadow var(--t-base), backdrop-filter var(--t-base);
+  transition: box-shadow var(--t-base);
 }
 
-.site-header.scrolled {
+/* Glass effect via ::before so the header itself does NOT become a
+   containing block for position:fixed children (backdrop-filter would
+   trap nav-menu inside the 72px header bounds). */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background var(--t-base), backdrop-filter var(--t-base);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.site-header.scrolled::before {
   background: rgba(255,255,255,0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+}
+
+.site-header.scrolled {
   box-shadow: var(--shadow-float);
 }
 
