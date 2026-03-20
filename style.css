@@ -354,6 +354,10 @@ p { line-height: 1.7; }
     color: #fff;
   }
 
+  /* Override scrolled-state dark color — menu background is always dark */
+  .site-header.scrolled .nav-menu .nav-link { color: #fff; }
+  .site-header.scrolled .nav-menu .nav-link:hover { color: rgba(255,255,255,0.7); }
+
   .nav-cta { margin-left: 0; }
 }
 
