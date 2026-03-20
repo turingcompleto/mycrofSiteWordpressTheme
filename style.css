@@ -970,6 +970,15 @@ p { line-height: 1.7; }
 [data-reveal-delay="400"] { transition-delay: 0.4s; }
 [data-reveal-delay="500"] { transition-delay: 0.5s; }
 
+/* Mobile: force reveal — small viewports can miss the observer threshold */
+@media (max-width: 768px) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAXIMALIST — SECTION DECORATION

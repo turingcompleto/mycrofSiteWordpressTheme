@@ -603,7 +603,7 @@
       if (e.target.classList.contains('counter'))        animateCounter(e.target);
       revealIO.unobserve(e.target);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: isMobile() ? 0.05 : 0.12, rootMargin: isMobile() ? '0px' : '0px 0px -40px 0px' });
   document.querySelectorAll('[data-reveal], .scramble-title, .counter').forEach(el => revealIO.observe(el));
 
   /* ─── PROCESS STEPS ──────────────────────────────────────────────────────── */
